@@ -1,0 +1,19 @@
+### Health check
+GET http://localhost:8666/api/health
+
+### Create the household member
+POST http://localhost:8666/api/household-member
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "dateOfBirth": "1990-01-01",
+  "countryOfResidence": "Switzerland",
+  "countryOfEmployment": "Switzerland",
+  "averageMonthlySalary": 6000.00,
+  "currentCash": 15000.00
+}
+
+### Get the household member
+GET http://localhost:8666/api/household-member
