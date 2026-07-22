@@ -5,8 +5,12 @@ Angular 22 application (standalone components, no NgModules).
 ## Prerequisites
 
 * Node.js 22.22.3+ (or 24.15+) — the Angular CLI enforces this minimum.
-  A `.nvmrc` is provided; if you use [nvm](https://github.com/nvm-sh/nvm),
-  run:
+  The version is pinned repo-wide in `.tool-versions`; if you use
+  [asdf](https://asdf-vm.com/), run from the repository root:
+  ```bash
+  asdf install
+  ```
+  A `.nvmrc` is also provided for [nvm](https://github.com/nvm-sh/nvm) users:
   ```bash
   cd frontend
   nvm install
