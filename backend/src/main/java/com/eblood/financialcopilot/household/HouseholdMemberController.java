@@ -10,25 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HouseholdMemberController {
 
-    private final HouseholdMemberRepository repository;
-    private final HouseholdMemberMapper mapper;
+    private final HouseholdMemberService service;
 
-    public HouseholdMemberController(HouseholdMemberRepository repository, HouseholdMemberMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
+    public HouseholdMemberController(HouseholdMemberService service) {
+        this.service = service;
     }
 
     @PostMapping("/api/household-member")
     public ResponseEntity<HouseholdMemberResponse> create(@Valid @RequestBody HouseholdMemberRequest request) {
-        HouseholdMember saved = repository.save(mapper.toEntity(request));
-        return ResponseEntity.ok(mapper.toResponse(saved));
+        return ResponseEntity.ok(service.create(request));
     }
 
     @GetMapping("/api/household-member")
     public ResponseEntity<HouseholdMemberResponse> get() {
-        return repository.findAll().stream()
-                .findFirst()
-                .map(mapper::toResponse)
+        return service.get()
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

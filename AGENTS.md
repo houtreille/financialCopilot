@@ -149,6 +149,23 @@ Keep the calculation engine independent from:
 
 The simulation engine must be usable directly from unit tests.
 
+Within each module, layer the code as:
+
+```text
+Controller  -> Service -> Repository
+```
+
+* Controllers must depend only on a service, never directly on a repository.
+  They handle HTTP concerns (request/response DTOs, status codes,
+  validation) and nothing else.
+* Services hold the business logic and the transaction boundary
+  (`@Transactional`). They are the only place allowed to use both the
+  repository and the mapper.
+* Repositories are limited to persistence.
+* Do not introduce a service interface separate from its implementation
+  unless there is a current reason for more than one implementation
+  (avoid premature abstraction).
+
 ## Calculation rules
 
 Financial calculations must be:
