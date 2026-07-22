@@ -4,3 +4,19 @@ server:
 spring:
   application:
     name: financial-copilot-backend
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5436}/${DB_NAME:eudaimonia_engine_db}
+    username: ${DB_USER:eudaimonia_user}
+    password: ${DB_PASSWORD:eudaimonia_password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: financial_copilot
+  flyway:
+    enabled: true
+    schemas: financial_copilot
+    default-schema: financial_copilot
+    create-schemas: true
