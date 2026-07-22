@@ -12,16 +12,4 @@ public record HouseholdMemberResponse(
         String countryOfEmployment,
         BigDecimal averageMonthlySalary,
         BigDecimal currentCash) {
-
-    static HouseholdMemberResponse from(HouseholdMember member) {
-        return new HouseholdMemberResponse(
-                member.getId(),
-                member.getFirstName(),
-                member.getLastName(),
-                member.getDateOfBirth(),
-                member.getCountryOfResidence(),
-                member.getCountryOfEmployment(),
-                member.getAverageMonthlySalary(),
-                member.getCurrentCash());
-    }
 }

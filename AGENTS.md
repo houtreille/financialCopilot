@@ -90,9 +90,19 @@ Do not implement unrelated modules before this vertical slice works.
 * Maven;
 * PostgreSQL;
 * Flyway;
+* Lombok;
+* MapStruct;
 * JUnit;
 * AssertJ;
 * REST APIs.
+
+Use Lombok on domain entities, JPA entities and DTOs instead of hand-written
+getters, setters, constructors or `equals`/`hashCode`. Do not hand-write
+boilerplate that Lombok already generates.
+
+Use MapStruct for mapping between JPA entities, domain models and DTOs
+(request/response objects). Do not hand-write mapping code between these
+layers; define a MapStruct mapper interface instead.
 
 ### Frontend
 

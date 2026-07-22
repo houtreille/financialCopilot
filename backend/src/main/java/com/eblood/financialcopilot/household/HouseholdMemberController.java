@@ -11,30 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class HouseholdMemberController {
 
     private final HouseholdMemberRepository repository;
+    private final HouseholdMemberMapper mapper;
 
-    public HouseholdMemberController(HouseholdMemberRepository repository) {
+    public HouseholdMemberController(HouseholdMemberRepository repository, HouseholdMemberMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @PostMapping("/api/household-member")
     public ResponseEntity<HouseholdMemberResponse> create(@Valid @RequestBody HouseholdMemberRequest request) {
-        HouseholdMember member = new HouseholdMember(
-                request.firstName(),
-                request.lastName(),
-                request.dateOfBirth(),
-                request.countryOfResidence(),
-                request.countryOfEmployment(),
-                request.averageMonthlySalary(),
-                request.currentCash());
-        HouseholdMember saved = repository.save(member);
-        return ResponseEntity.ok(HouseholdMemberResponse.from(saved));
+        HouseholdMember saved = repository.save(mapper.toEntity(request));
+        return ResponseEntity.ok(mapper.toResponse(saved));
     }
 
     @GetMapping("/api/household-member")
     public ResponseEntity<HouseholdMemberResponse> get() {
         return repository.findAll().stream()
                 .findFirst()
-                .map(HouseholdMemberResponse::from)
+                .map(mapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
