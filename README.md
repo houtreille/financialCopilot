@@ -494,6 +494,34 @@ proxied to the backend on port `8666`.
 
 ---
 
+## Deployment (free, personal use)
+
+There is no authentication yet — this is meant for personal remote access,
+not a public production deployment.
+
+Stack: [Neon](https://neon.tech) (free Postgres) + [Render](https://render.com)
+(free web service for the backend, free static site for the frontend).
+
+1. Create a free Neon project and copy its connection details
+   (host, database, user, password).
+2. On Render, create a new **Blueprint**, point it at this GitHub repository —
+   it will pick up `render.yaml` and create both the backend web service and
+   the frontend static site.
+3. On the backend service, set the environment variables
+   `SPRING_DATASOURCE_URL` (e.g.
+   `jdbc:postgresql://<neon-host>/<neon-db>?sslmode=require`),
+   `SPRING_DATASOURCE_USERNAME` and `SPRING_DATASOURCE_PASSWORD` from the
+   Neon connection details, then deploy. Flyway runs automatically on
+   startup.
+4. If the backend service ends up with a different name/URL than
+   `financial-copilot-backend`, update the `/api/*` rewrite destination in
+   `render.yaml` accordingly and redeploy the frontend.
+
+The free Render web service plan spins down after inactivity, so the first
+request after a while will be slow to respond (cold start).
+
+---
+
 ## Development workflow
 
 Each feature should be developed through a focused GitHub issue.
