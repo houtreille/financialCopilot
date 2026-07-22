@@ -405,6 +405,22 @@ The backend lives under `backend/` and is a standalone Spring Boot / Maven appli
 
 * Java 21
 * Maven
+* A local PostgreSQL instance
+
+### Database
+
+The backend expects a PostgreSQL database reachable with the following defaults
+(overridable via `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` environment
+variables):
+
+* host: `localhost`
+* port: `5436`
+* database: `eudaimonia_engine_db`
+* user: `eudaimonia_user`
+
+Flyway manages the schema. All Financial Copilot tables live in a dedicated
+`financial_copilot` PostgreSQL schema, so the backend can safely share a database
+instance with unrelated data living in other schemas (e.g. `public`).
 
 ### Build
 
@@ -420,7 +436,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-The application starts on port `8666`.
+The application starts on port `8666` and runs Flyway migrations automatically.
 
 ### Health check
 
@@ -432,6 +448,24 @@ Expected response:
 
 ```json
 {"status":"UP"}
+```
+
+### Household member
+
+```bash
+curl -X POST http://localhost:8666/api/household-member \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "dateOfBirth": "1990-01-01",
+    "countryOfResidence": "Switzerland",
+    "countryOfEmployment": "Switzerland",
+    "averageMonthlySalary": 6000.00,
+    "currentCash": 15000.00
+  }'
+
+curl http://localhost:8666/api/household-member
 ```
 
 ---
