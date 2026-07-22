@@ -1,5 +1,6 @@
 package com.eblood.financialcopilot.household;
 
+import java.util.List;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,7 @@ public class HouseholdMemberController {
     }
 
     @GetMapping("/api/household-member")
-    public ResponseEntity<HouseholdMemberResponse> get() {
-        return service.get()
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<List<HouseholdMemberResponse>> findAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 }

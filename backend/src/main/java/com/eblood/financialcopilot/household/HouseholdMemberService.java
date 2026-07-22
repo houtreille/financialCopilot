@@ -1,6 +1,7 @@
 package com.eblood.financialcopilot.household;
 
-import java.util.Optional;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class HouseholdMemberService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<HouseholdMemberResponse> get() {
-        return repository.findAll().stream().findFirst().map(mapper::toResponse);
+    public List<HouseholdMemberResponse> findAll() {
+        return repository.findAll().stream().map(mapper::toResponse).toList();
     }
 }

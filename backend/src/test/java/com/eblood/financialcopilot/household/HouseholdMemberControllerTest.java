@@ -5,16 +5,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import tools.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,7 +31,7 @@ class HouseholdMemberControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void createsAndRetrievesTheHouseholdMember() throws Exception {
+    void createsAndListsHouseholdMembers() throws Exception {
         HouseholdMemberRequest request = new HouseholdMemberRequest(
                 "Jane",
                 "Doe",
@@ -50,18 +50,21 @@ class HouseholdMemberControllerTest {
 
         mockMvc.perform(get("/api/household-member"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("Jane"))
-                .andExpect(jsonPath("$.lastName").value("Doe"))
-                .andExpect(jsonPath("$.countryOfResidence").value("Switzerland"))
-                .andExpect(jsonPath("$.countryOfEmployment").value("Switzerland"))
-                .andExpect(jsonPath("$.averageMonthlySalary").value(6000.00))
-                .andExpect(jsonPath("$.currentCash").value(15000.00));
+                .andExpect(jsonPath("$[0].firstName").value("Jane"))
+                .andExpect(jsonPath("$[0].lastName").value("Doe"))
+                .andExpect(jsonPath("$[0].countryOfResidence").value("Switzerland"))
+                .andExpect(jsonPath("$[0].countryOfEmployment").value("Switzerland"))
+                .andExpect(jsonPath("$[0].averageMonthlySalary").value(6000.00))
+                .andExpect(jsonPath("$[0].currentCash").value(15000.00));
     }
 
     @Test
-    void returnsNotFoundWhenNoHouseholdMemberExists() throws Exception {
+    void returnsAnEmptyListWhenNoHouseholdMemberExists() throws Exception {
         repository.deleteAll();
 
-        mockMvc.perform(get("/api/household-member")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/household-member"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isEmpty());
     }
 }

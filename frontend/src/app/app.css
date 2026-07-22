@@ -1,0 +1,14 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.status--up {
+  color: #1a7f37;
+}
+
+.status--error {
+  color: #b42318;
+}

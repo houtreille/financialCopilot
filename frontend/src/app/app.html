@@ -1,0 +1,32 @@
+<main class="app">
+  <h1>Financial Copilot</h1>
+
+  <section class="health">
+    <h2>Backend status</h2>
+    @switch (healthStatus()) {
+      @case ('loading') {
+        <p>Checking backend health…</p>
+      }
+      @case ('up') {
+        <p class="status status--up">Backend is UP</p>
+      }
+      @case ('error') {
+        <p class="status status--error">Could not reach the backend.</p>
+      }
+    }
+  </section>
+
+  <section class="household-members">
+    <h2>Household members</h2>
+    @if (householdMembersError()) {
+      <p class="status status--error">{{ householdMembersError() }}</p>
+    } @else {
+      <ag-grid-angular
+        style="height: 300px; width: 100%;"
+        [rowData]="householdMembers()"
+        [columnDefs]="columnDefs"
+        [theme]="gridTheme"
+      />
+    }
+  </section>
+</main>

@@ -1,7 +1,7 @@
 ### Health check
 GET http://localhost:8666/api/health
 
-### Create the household member
+### Create a household member
 POST http://localhost:8666/api/household-member
 Content-Type: application/json
 
@@ -15,5 +15,5 @@ Content-Type: application/json
   "currentCash": 15000.00
 }
 
-### Get the household member
+### List household members
 GET http://localhost:8666/api/household-member

@@ -470,6 +470,30 @@ curl http://localhost:8666/api/household-member
 
 ---
 
+## Getting started — Frontend
+
+The frontend lives under `frontend/` and is a standalone Angular application
+(Angular 22, no NgModules). See `frontend/README.md` for details.
+
+### Prerequisites
+
+* Node.js 22.12+ (or 24+)
+* The backend running locally on port `8666`
+
+### Run
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+The application starts on `http://localhost:4200` and displays the backend
+health status and a table (ag-grid) of household members. API calls are
+proxied to the backend on port `8666`.
+
+---
+
 ## Development workflow
 
 Each feature should be developed through a focused GitHub issue.
