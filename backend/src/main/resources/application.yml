@@ -1,0 +1,6 @@
+server:
+  port: 8666
+
+spring:
+  application:
+    name: financial-copilot-backend

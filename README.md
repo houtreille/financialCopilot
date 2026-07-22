@@ -397,6 +397,45 @@ financial-copilot/
 
 ---
 
+## Getting started — Backend
+
+The backend lives under `backend/` and is a standalone Spring Boot / Maven application.
+
+### Prerequisites
+
+* Java 21
+* Maven
+
+### Build
+
+```bash
+cd backend
+mvn verify
+```
+
+### Run
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+The application starts on port `8666`.
+
+### Health check
+
+```bash
+curl http://localhost:8666/api/health
+```
+
+Expected response:
+
+```json
+{"status":"UP"}
+```
+
+---
+
 ## Development workflow
 
 Each feature should be developed through a focused GitHub issue.
