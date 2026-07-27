@@ -1,0 +1,26 @@
+.auth {
+  max-width: 360px;
+  margin: 4rem auto;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.auth-switch {
+  margin-top: 1.5rem;
+}
+
+.status--error {
+  color: #b42318;
+}

@@ -16,8 +16,8 @@ Angular 22 application (standalone components, no NgModules).
   nvm install
   nvm use
   ```
-* The backend running locally on port `8666` (see `backend/README.md` / the
-  root `README.md`)
+* The backend running locally on port `8666` (see the root `README.md`,
+  "Getting started — Backend")
 
 ## Install dependencies
 

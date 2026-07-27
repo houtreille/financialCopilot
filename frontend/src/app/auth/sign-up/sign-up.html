@@ -1,0 +1,63 @@
+<main class="auth">
+  <h1>Financial Copilot</h1>
+  <h2>Sign up</h2>
+
+  <form class="auth-form" (ngSubmit)="submit()">
+    <label>
+      Username
+      <input type="text" name="username" [(ngModel)]="form.username" required autocomplete="username" />
+    </label>
+
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="form.password"
+        required
+        minlength="8"
+        autocomplete="new-password"
+      />
+    </label>
+
+    <label>
+      Date of birth
+      <input type="date" name="dateOfBirth" [(ngModel)]="form.dateOfBirth" required />
+    </label>
+
+    <label>
+      Country of residence
+      <input type="text" name="countryOfResidence" [(ngModel)]="form.countryOfResidence" required />
+    </label>
+
+    <label>
+      Country of employment
+      <input type="text" name="countryOfEmployment" [(ngModel)]="form.countryOfEmployment" required />
+    </label>
+
+    <label>
+      Average monthly salary
+      <input
+        type="number"
+        name="averageMonthlySalary"
+        [(ngModel)]="form.averageMonthlySalary"
+        required
+        min="0"
+        step="0.01"
+      />
+    </label>
+
+    <label>
+      Current cash
+      <input type="number" name="currentCash" [(ngModel)]="form.currentCash" required min="0" step="0.01" />
+    </label>
+
+    @if (error()) {
+      <p class="status status--error">{{ error() }}</p>
+    }
+
+    <button type="submit">Create account</button>
+  </form>
+
+  <p class="auth-switch">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
+</main>

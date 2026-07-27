@@ -7,6 +7,8 @@ services:
     plan: free
     healthCheckPath: /api/health
     envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
       - key: SPRING_DATASOURCE_URL
         sync: false
       - key: SPRING_DATASOURCE_USERNAME

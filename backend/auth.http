@@ -1,0 +1,70 @@
+### Sign up (creates the household member + credentials)
+POST http://localhost:8666/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "jane",
+  "password": "secret123",
+  "dateOfBirth": "1990-01-01",
+  "countryOfResidence": "Switzerland",
+  "countryOfEmployment": "Switzerland",
+  "averageMonthlySalary": 6000.00,
+  "currentCash": 15000.00
+}
+
+### Sign up with an already-taken username -> 409 Conflict
+POST http://localhost:8666/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "jane",
+  "password": "secret123",
+  "dateOfBirth": "1990-01-01",
+  "countryOfResidence": "Switzerland",
+  "countryOfEmployment": "Switzerland",
+  "averageMonthlySalary": 6000.00,
+  "currentCash": 15000.00
+}
+
+### Wrong Log in -> the client keeps the JSESSIONID cookie for the next requests
+POST http://localhost:8666/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "jane",
+  "password": "secret123"
+}
+
+### Coorect Log in -> the client keeps the JSESSIONID cookie for the next requests
+POST http://localhost:8666/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alibaba",
+  "password": "Reuss1r+"
+}
+
+### Log in with the wrong password -> 401 Unauthorized
+POST http://localhost:8666/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "jane",
+  "password": "wrong-password"
+}
+
+### Who am I? (requires the session cookie from the successful login above)
+GET http://localhost:8666/api/auth/me
+
+### Household members now require a session too
+GET http://localhost:8666/api/household-member
+
+### Without a session at all -> 401 Unauthorized
+# Run this in a fresh session (e.g. a new HTTP Client environment, or after Log out below)
+GET http://localhost:8666/api/auth/me
+
+### Log out (invalidates the session)
+POST http://localhost:8666/api/auth/logout
+
+### After logout, the session is gone -> 401 Unauthorized
+GET http://localhost:8666/api/auth/me

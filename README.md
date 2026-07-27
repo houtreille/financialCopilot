@@ -499,26 +499,60 @@ proxied to the backend on port `8666`.
 There is no authentication yet — this is meant for personal remote access,
 not a public production deployment.
 
+**Currently deployed and live:**
+
+* Backend: https://financial-copilot-backend.onrender.com
+  (`GET /api/health` → `{"status":"UP"}`)
+* Frontend: https://financial-copilot-frontend.onrender.com
+
 Stack: [Neon](https://neon.tech) (free Postgres) + [Render](https://render.com)
 (free web service for the backend, free static site for the frontend).
+Both are declared in `render.yaml` (a Render Blueprint) so redeploying or
+recreating the setup from scratch is a single "New Blueprint" action pointed
+at this repository.
 
-1. Create a free Neon project and copy its connection details
-   (host, database, user, password).
-2. On Render, create a new **Blueprint**, point it at this GitHub repository —
-   it will pick up `render.yaml` and create both the backend web service and
-   the frontend static site.
-3. On the backend service, set the environment variables
-   `SPRING_DATASOURCE_URL` (e.g.
-   `jdbc:postgresql://<neon-host>/<neon-db>?sslmode=require`),
-   `SPRING_DATASOURCE_USERNAME` and `SPRING_DATASOURCE_PASSWORD` from the
-   Neon connection details, then deploy. Flyway runs automatically on
-   startup.
+### Backend configuration
+
+The backend runs with `SPRING_PROFILES_ACTIVE=prod`, which activates
+`backend/src/main/resources/application-prod.yml` (binds to Render's `$PORT`,
+trims logging). Everything datasource-related is provided purely through
+environment variables — no code or config file holds any connection detail:
+
+| Env var                        | Purpose                                    |
+|---------------------------------|---------------------------------------------|
+| `SPRING_PROFILES_ACTIVE`       | Set to `prod` (declared in `render.yaml`)   |
+| `SPRING_DATASOURCE_URL`        | Neon JDBC URL, e.g. `jdbc:postgresql://<neon-host>/<neon-db>?sslmode=require&channel_binding=require` |
+| `SPRING_DATASOURCE_USERNAME`   | Neon role (e.g. `neondb_owner`)             |
+| `SPRING_DATASOURCE_PASSWORD`   | Neon role password                          |
+
+The last three are marked `sync: false` in `render.yaml` (Render won't
+overwrite them on blueprint sync) and must be set once by hand on the backend
+service, from the Neon project's connection details. Flyway runs
+automatically on startup and creates its own `financial_copilot` schema, so
+it can safely share a Postgres instance/database with unrelated data in
+other schemas.
+
+### Redeploying from scratch
+
+1. Create a free Neon project and copy its connection details.
+2. On Render, create a new **Blueprint** pointed at this GitHub repository —
+   it picks up `render.yaml` and creates both the backend web service and the
+   frontend static site.
+3. On the backend service, set the three `SPRING_DATASOURCE_*` environment
+   variables from the Neon connection details, then deploy.
 4. If the backend service ends up with a different name/URL than
    `financial-copilot-backend`, update the `/api/*` rewrite destination in
    `render.yaml` accordingly and redeploy the frontend.
 
-The free Render web service plan spins down after inactivity, so the first
-request after a while will be slow to respond (cold start).
+### Known limitations
+
+* The free Render web service plan spins down after inactivity, so the
+  first request after a while will be slow to respond (cold start).
+* `mvn package` requires `spring-boot-maven-plugin` (declared in
+  `backend/pom.xml`) to produce an executable jar with a `Main-Class`
+  manifest entry — without it, `java -jar app.jar` fails with
+  `no main manifest attribute`. Easy to miss locally since
+  `mvn spring-boot:run` never needs repackaging.
 
 ---
 

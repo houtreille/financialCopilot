@@ -1,0 +1,26 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status--up {
+  color: #1a7f37;
+}
+
+.status--error {
+  color: #b42318;
+}

@@ -1,0 +1,14 @@
+# Activated via SPRING_PROFILES_ACTIVE=prod (set in render.yaml).
+# Datasource credentials are provided entirely through the
+# SPRING_DATASOURCE_URL / SPRING_DATASOURCE_USERNAME / SPRING_DATASOURCE_PASSWORD
+# environment variables set on the Render service - Spring's env var binding
+# overrides the placeholders in application.yml, so nothing datasource-related
+# needs to be repeated here.
+
+server:
+  port: ${PORT:8666}
+
+logging:
+  level:
+    root: WARN
+    com.eblood.financialcopilot: INFO
