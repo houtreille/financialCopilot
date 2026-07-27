@@ -23,12 +23,6 @@ public class HouseholdMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
@@ -43,4 +37,10 @@ public class HouseholdMember {
 
     @Column(name = "current_cash", nullable = false)
     private BigDecimal currentCash;
+
+    @Column(name = "username", unique = true)
+    private String username;
+
+    @Column(name = "password_hash")
+    private String passwordHash;
 }

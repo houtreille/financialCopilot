@@ -43,8 +43,6 @@ public class AuthService {
         HouseholdMember member = new HouseholdMember();
         member.setUsername(request.username());
         member.setPasswordHash(passwordEncoder.encode(request.password()));
-        member.setFirstName(request.firstName());
-        member.setLastName(request.lastName());
         member.setDateOfBirth(request.dateOfBirth());
         member.setCountryOfResidence(request.countryOfResidence());
         member.setCountryOfEmployment(request.countryOfEmployment());
@@ -89,6 +87,6 @@ public class AuthService {
     }
 
     private CurrentUserResponse toResponse(HouseholdMember member) {
-        return new CurrentUserResponse(member.getId(), member.getUsername(), member.getFirstName(), member.getLastName());
+        return new CurrentUserResponse(member.getId(), member.getUsername());
     }
 }

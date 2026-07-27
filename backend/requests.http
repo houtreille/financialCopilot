@@ -6,8 +6,6 @@ POST http://localhost:8666/api/household-member
 Content-Type: application/json
 
 {
-  "firstName": "Jane",
-  "lastName": "Doe",
   "dateOfBirth": "1990-01-01",
   "countryOfResidence": "Switzerland",
   "countryOfEmployment": "Switzerland",

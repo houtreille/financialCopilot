@@ -1,5 +1,6 @@
 package com.eblood.financialcopilot.household;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,8 +34,6 @@ class HouseholdMemberControllerTest {
     @Test
     void createsAndListsHouseholdMembers() throws Exception {
         HouseholdMemberRequest request = new HouseholdMemberRequest(
-                "Jane",
-                "Doe",
                 LocalDate.of(1990, 1, 1),
                 "Switzerland",
                 "Switzerland",
@@ -42,16 +41,15 @@ class HouseholdMemberControllerTest {
                 new BigDecimal("15000.00"));
 
         mockMvc.perform(post("/api/household-member")
+                        .with(user("jane"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.firstName").value("Jane"));
+                .andExpect(jsonPath("$.countryOfResidence").value("Switzerland"));
 
-        mockMvc.perform(get("/api/household-member"))
+        mockMvc.perform(get("/api/household-member").with(user("jane")))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName").value("Jane"))
-                .andExpect(jsonPath("$[0].lastName").value("Doe"))
                 .andExpect(jsonPath("$[0].countryOfResidence").value("Switzerland"))
                 .andExpect(jsonPath("$[0].countryOfEmployment").value("Switzerland"))
                 .andExpect(jsonPath("$[0].averageMonthlySalary").value(6000.00))
@@ -62,7 +60,7 @@ class HouseholdMemberControllerTest {
     void returnsAnEmptyListWhenNoHouseholdMemberExists() throws Exception {
         repository.deleteAll();
 
-        mockMvc.perform(get("/api/household-member"))
+        mockMvc.perform(get("/api/household-member").with(user("jane")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isEmpty());

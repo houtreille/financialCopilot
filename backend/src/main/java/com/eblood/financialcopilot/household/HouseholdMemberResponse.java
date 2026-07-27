@@ -5,8 +5,6 @@ import java.time.LocalDate;
 
 public record HouseholdMemberResponse(
         Long id,
-        String firstName,
-        String lastName,
         LocalDate dateOfBirth,
         String countryOfResidence,
         String countryOfEmployment,

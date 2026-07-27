@@ -32,8 +32,6 @@ class AuthControllerTest {
         SignUpRequest request = new SignUpRequest(
                 username,
                 "secret123",
-                "Jane",
-                "Doe",
                 LocalDate.of(1990, 1, 1),
                 "Switzerland",
                 "Switzerland",

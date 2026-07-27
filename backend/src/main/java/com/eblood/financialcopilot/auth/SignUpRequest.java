@@ -10,8 +10,6 @@ import jakarta.validation.constraints.Size;
 public record SignUpRequest(
         @NotBlank String username,
         @NotBlank @Size(min = 8) String password,
-        @NotBlank String firstName,
-        @NotBlank String lastName,
         @NotNull @PastOrPresent LocalDate dateOfBirth,
         @NotBlank String countryOfResidence,
         @NotBlank String countryOfEmployment,
