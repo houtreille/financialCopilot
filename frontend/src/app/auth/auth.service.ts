@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 export interface CurrentUser {
   id: number;
   username: string;
+  isAdmin: boolean;
 }
 
 export interface SignUpRequest {

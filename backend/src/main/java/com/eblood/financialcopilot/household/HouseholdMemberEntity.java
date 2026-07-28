@@ -2,6 +2,7 @@ package com.eblood.financialcopilot.household;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.Column;
@@ -50,5 +51,5 @@ public class HouseholdMemberEntity {
     private String passwordHash;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Collection<RoleEntity> roles;
+    private Collection<RoleEntity> roles = new ArrayList<>();
 }

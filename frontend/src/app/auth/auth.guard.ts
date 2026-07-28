@@ -7,12 +7,13 @@ export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.currentUser()) {
-    return true;
+  const cachedUser = authService.currentUser();
+  if (cachedUser) {
+    return cachedUser.isAdmin ? true : router.createUrlTree(['/sign-in']);
   }
 
   return authService.me().pipe(
-    map(() => true),
+    map((user) => (user.isAdmin ? true : router.createUrlTree(['/sign-in']))),
     catchError(() => of(router.createUrlTree(['/sign-in'])))
   );
 };

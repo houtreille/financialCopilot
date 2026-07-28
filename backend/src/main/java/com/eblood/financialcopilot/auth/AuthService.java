@@ -5,6 +5,8 @@ import com.eblood.financialcopilot.household.HouseholdMemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final HouseholdMemberRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -50,7 +54,7 @@ public class AuthService {
         member.setCurrentCash(request.currentCash());
 
         HouseholdMemberEntity saved = repository.save(member);
-        return toResponse(saved);
+        return toResponse(saved, false);
     }
 
     public CurrentUserResponse login(LoginRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
@@ -59,6 +63,7 @@ public class AuthService {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         } catch (AuthenticationException e) {
+            log.warn("Login failed for username '{}'", request.username(), e);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
 
@@ -80,13 +85,17 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public CurrentUserResponse currentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        HouseholdMemberEntity member = repository.findByUsername(username)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HouseholdMemberEntity member = repository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-        return toResponse(member);
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        return toResponse(member, isAdmin);
     }
 
-    private CurrentUserResponse toResponse(HouseholdMemberEntity member) {
-        return new CurrentUserResponse(member.getId(), member.getUsername());
+    private CurrentUserResponse toResponse(HouseholdMemberEntity member, boolean isAdmin) {
+        return new CurrentUserResponse(member.getId(), member.getUsername(), isAdmin);
     }
 }
