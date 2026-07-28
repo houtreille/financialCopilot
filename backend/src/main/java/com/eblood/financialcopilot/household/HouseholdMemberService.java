@@ -18,7 +18,7 @@ public class HouseholdMemberService {
     }
 
     public HouseholdMemberResponse create(HouseholdMemberRequest request) {
-        HouseholdMember saved = repository.save(mapper.toEntity(request));
+        HouseholdMemberEntity saved = repository.save(mapper.toEntity(request));
         return mapper.toResponse(saved);
     }
 

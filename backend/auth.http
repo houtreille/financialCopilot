@@ -40,7 +40,7 @@ POST http://localhost:8666/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "alibaba",
+  "username": "admin",
   "password": "Reuss1r+"
 }
 

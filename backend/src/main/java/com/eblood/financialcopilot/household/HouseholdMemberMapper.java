@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 public interface HouseholdMemberMapper {
 
     @Mapping(target = "id", ignore = true)
-    HouseholdMember toEntity(HouseholdMemberRequest request);
+    HouseholdMemberEntity toEntity(HouseholdMemberRequest request);
 
-    HouseholdMemberResponse toResponse(HouseholdMember member);
+    HouseholdMemberResponse toResponse(HouseholdMemberEntity member);
 }

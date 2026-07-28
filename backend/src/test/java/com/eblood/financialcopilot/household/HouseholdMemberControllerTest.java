@@ -48,7 +48,7 @@ class HouseholdMemberControllerTest {
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.countryOfResidence").value("Switzerland"));
 
-        mockMvc.perform(get("/api/household-member").with(user("jane")))
+        mockMvc.perform(get("/api/household-member").with(user("jane").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].countryOfResidence").value("Switzerland"))
                 .andExpect(jsonPath("$[0].countryOfEmployment").value("Switzerland"))
@@ -60,9 +60,15 @@ class HouseholdMemberControllerTest {
     void returnsAnEmptyListWhenNoHouseholdMemberExists() throws Exception {
         repository.deleteAll();
 
-        mockMvc.perform(get("/api/household-member").with(user("jane")))
+        mockMvc.perform(get("/api/household-member").with(user("jane").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void rejectsListingForNonAdminUsers() throws Exception {
+        mockMvc.perform(get("/api/household-member").with(user("jane").roles("USER")))
+                .andExpect(status().isForbidden());
     }
 }

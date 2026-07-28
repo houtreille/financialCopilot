@@ -1,6 +1,6 @@
 package com.eblood.financialcopilot.auth;
 
-import com.eblood.financialcopilot.household.HouseholdMember;
+import com.eblood.financialcopilot.household.HouseholdMemberEntity;
 import com.eblood.financialcopilot.household.HouseholdMemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,7 +40,7 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
         }
 
-        HouseholdMember member = new HouseholdMember();
+        HouseholdMemberEntity member = new HouseholdMemberEntity();
         member.setUsername(request.username());
         member.setPasswordHash(passwordEncoder.encode(request.password()));
         member.setDateOfBirth(request.dateOfBirth());
@@ -49,7 +49,7 @@ public class AuthService {
         member.setAverageMonthlySalary(request.averageMonthlySalary());
         member.setCurrentCash(request.currentCash());
 
-        HouseholdMember saved = repository.save(member);
+        HouseholdMemberEntity saved = repository.save(member);
         return toResponse(saved);
     }
 
@@ -81,12 +81,12 @@ public class AuthService {
     @Transactional(readOnly = true)
     public CurrentUserResponse currentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        HouseholdMember member = repository.findByUsername(username)
+        HouseholdMemberEntity member = repository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
         return toResponse(member);
     }
 
-    private CurrentUserResponse toResponse(HouseholdMember member) {
+    private CurrentUserResponse toResponse(HouseholdMemberEntity member) {
         return new CurrentUserResponse(member.getId(), member.getUsername());
     }
 }
