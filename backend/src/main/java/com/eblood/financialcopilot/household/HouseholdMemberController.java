@@ -2,6 +2,7 @@ package com.eblood.financialcopilot.household;
 
 import java.util.List;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class HouseholdMemberController {
 
     private final HouseholdMemberService service;
-
-    public HouseholdMemberController(HouseholdMemberService service) {
-        this.service = service;
-    }
 
     @PostMapping("/api/household-member")
     public ResponseEntity<HouseholdMemberResponse> create(@Valid @RequestBody HouseholdMemberRequest request) {

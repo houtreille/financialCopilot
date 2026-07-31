@@ -15,3 +15,30 @@ Content-Type: application/json
 
 ### List household members
 GET http://localhost:8666/api/household-member
+
+### Create an expense
+POST http://localhost:8666/api/expense
+Content-Type: application/json
+
+{
+  "amount": 150.00,
+  "month": "JULY",
+  "label": "Electricity bill",
+  "expenseType": "MONTHLY",
+  "expenseSheetId": 1
+}
+
+### List expenses
+GET http://localhost:8666/api/expenses
+
+### Create an expense sheet
+POST http://localhost:8666/api/expense-sheet
+Content-Type: application/json
+
+{
+  "sheetName": "Sept budget",
+  "owner": "admin"
+}
+
+### List expense sheets for an owner
+GET http://localhost:8666/api/expense-sheets?owner=admin
