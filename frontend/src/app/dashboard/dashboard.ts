@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { HealthService } from '../health.service';
 import { HouseholdMember } from '../household-member';
 import { HouseholdMemberService } from '../household-member.service';
+import { NavMenu } from '../nav-menu/nav-menu';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -13,7 +14,7 @@ type HealthStatus = 'loading' | 'up' | 'error';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [AgGridAngular],
+  imports: [AgGridAngular, NavMenu],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
