@@ -1,0 +1,19 @@
+.nav-menu {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.nav-menu__link {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  padding-bottom: 0.5rem;
+}
+
+.nav-menu__link--active {
+  color: #1a7f37;
+  border-bottom: 2px solid #1a7f37;
+}

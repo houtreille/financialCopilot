@@ -1,0 +1,17 @@
+<main class="app">
+  <app-nav-menu />
+
+  <section class="expense-sheets">
+    <h2>Expense sheets</h2>
+    @if (error()) {
+      <p class="status status--error">{{ error() }}</p>
+    } @else {
+      <ag-grid-angular
+        style="height: 300px; width: 100%;"
+        [rowData]="expenseSheets()"
+        [columnDefs]="columnDefs"
+        [theme]="gridTheme"
+      />
+    }
+  </section>
+</main>

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/auth.guard';
+import { authenticatedGuard } from './auth/authenticated.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'sign-in' },
@@ -15,6 +16,11 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard)
+  },
+  {
+    path: 'expense-sheets',
+    canActivate: [authenticatedGuard],
+    loadComponent: () => import('./expense-sheet/expense-sheets').then((m) => m.ExpenseSheets)
   },
   { path: '**', redirectTo: 'sign-in' }
 ];
