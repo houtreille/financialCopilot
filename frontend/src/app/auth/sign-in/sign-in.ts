@@ -21,7 +21,7 @@ export class SignIn {
     this.error.set(null);
 
     this.authService.login({ username: this.username, password: this.password }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: (user) => this.router.navigate([user.isAdmin ? '/dashboard' : '/expense-sheets']),
       error: () => this.error.set('Invalid username or password.')
     });
   }

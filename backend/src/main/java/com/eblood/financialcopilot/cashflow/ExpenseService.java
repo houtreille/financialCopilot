@@ -3,6 +3,7 @@ package com.eblood.financialcopilot.cashflow;
 import com.eblood.financialcopilot.household.HouseholdMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,14 @@ public class ExpenseService {
         return expenseSheetRepository.findAllByOwnerUsername(owner).stream()
                 .map(mapper::toResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public ExpenseSheetResponse findExpenseSheetById(Long id) {
+        return expenseSheetRepository.findById(id)
+                .map(mapper::toResponse)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Expense sheet not found: " + id));
     }
 
     @Transactional(readOnly = true)
@@ -63,4 +72,19 @@ public class ExpenseService {
         return mapper.toResponse(saved);
     }
 
+    @Transactional
+    public void deleteExpenseSheet(Long id) {
+        expenseSheetRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Expense sheet not found: " + id));
+        expenseSheetRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteExpense(Long id) {
+        expenseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Expense not found: " + id));
+        expenseRepository.deleteById(id);
+    }
 }

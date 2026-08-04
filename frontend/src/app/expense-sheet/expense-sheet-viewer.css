@@ -9,7 +9,7 @@
   color: #b42318;
 }
 
-.add-expense-sheet-form {
+.add-expense-form {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -17,7 +17,7 @@
   margin-top: 1rem;
 }
 
-.add-expense-sheet-form label {
+.add-expense-form label {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

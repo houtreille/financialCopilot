@@ -1,0 +1,59 @@
+<main class="app">
+  <app-nav-menu />
+
+  @if (error()) {
+    <p class="status status--error">{{ error() }}</p>
+  } @else if (expenseSheet()) {
+    <section class="expense-sheet-viewer">
+      <h2>{{ expenseSheet()!.sheetName }}</h2>
+      <p>Owner: {{ expenseSheet()!.owner }}</p>
+
+      <ag-grid-angular
+        style="height: 300px; width: 100%;"
+        [rowData]="expenseSheet()!.expenses"
+        [columnDefs]="columnDefs"
+        [theme]="gridTheme"
+        (cellClicked)="onCellClicked($event)"
+      />
+
+      <p class="total"><strong>Total: {{ totalAmount() }}</strong></p>
+
+      <h3>Add expense</h3>
+      <form class="add-expense-form" (ngSubmit)="addExpense()">
+        <label>
+          Label
+          <input type="text" name="label" [(ngModel)]="newLabel" required />
+        </label>
+
+        <label>
+          Amount
+          <input type="number" name="amount" [(ngModel)]="newAmount" step="0.01" required />
+        </label>
+
+        <label>
+          Month
+          <select name="month" [(ngModel)]="newMonth" [disabled]="newExpenseType === 'MONTHLY'" required>
+            @for (month of months; track month) {
+              <option [value]="month">{{ month }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Type
+          <select name="expenseType" [(ngModel)]="newExpenseType" required>
+            @for (type of expenseTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        @if (createError()) {
+          <p class="status status--error">{{ createError() }}</p>
+        }
+
+        <button type="submit">Add expense</button>
+      </form>
+    </section>
+  }
+</main>

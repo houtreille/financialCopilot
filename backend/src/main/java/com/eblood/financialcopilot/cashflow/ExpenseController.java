@@ -4,7 +4,9 @@ package com.eblood.financialcopilot.cashflow;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,5 +40,22 @@ public class ExpenseController {
         return ResponseEntity.ok(service.findAllExpenseSheets(owner));
     }
 
+    @GetMapping("/api/expense-sheets/{id}")
+    private ResponseEntity<ExpenseSheetResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findExpenseSheetById(id));
+    }
+
+
+    @DeleteMapping("/api/expense-sheets/{id}")
+    private ResponseEntity<String> deleteById(@PathVariable Long id) {
+        service.deleteExpenseSheet(id);
+        return ResponseEntity.ok("Expense deleted");
+    }
+
+    @DeleteMapping("/api/expense/{id}")
+    private ResponseEntity<String> deleteExpense(@PathVariable Long id) {
+        service.deleteExpense(id);
+        return ResponseEntity.ok("Expense deleted");
+    }
 
 }

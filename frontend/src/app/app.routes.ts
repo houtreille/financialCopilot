@@ -22,5 +22,10 @@ export const routes: Routes = [
     canActivate: [authenticatedGuard],
     loadComponent: () => import('./expense-sheet/expense-sheets').then((m) => m.ExpenseSheets)
   },
+  {
+    path: 'expense-sheets/:id',
+    canActivate: [authenticatedGuard],
+    loadComponent: () => import('./expense-sheet/expense-sheet-viewer').then((m) => m.ExpenseSheetViewer)
+  },
   { path: '**', redirectTo: 'sign-in' }
 ];
