@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,21 @@ public class ExpenseController {
     private ResponseEntity<String> deleteExpense(@PathVariable Long id) {
         service.deleteExpense(id);
         return ResponseEntity.ok("Expense deleted");
+    }
+
+    @PutMapping("/api/expense/{id}")
+    private ResponseEntity<ExpenseResponse> updateExpense(@PathVariable Long id, @Valid @RequestBody ExpenseRequest expenseRequest) {
+        return ResponseEntity.ok(service.update(id, expenseRequest));
+    }
+
+    @PostMapping("/api/expense-category")
+    private ResponseEntity<ExpenseCategoryResponse> create(@Valid @RequestBody ExpenseCategoryRequest expenseCategoryRequest) {
+        return ResponseEntity.ok(service.createCategory(expenseCategoryRequest));
+    }
+
+    @GetMapping("/api/expense-categories")
+    private ResponseEntity<List<ExpenseCategoryResponse>> findAllCategories() {
+        return ResponseEntity.ok(service.findAllCategories());
     }
 
 }

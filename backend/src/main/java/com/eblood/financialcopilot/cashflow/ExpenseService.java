@@ -20,6 +20,7 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ExpenseSheetRepository expenseSheetRepository;
     private final HouseholdMemberRepository householdMemberRepository;
+    private final ExpenseCategoryRepository expenseCategoryRepository;
     private final ExpenseMapper mapper;
 
     @Transactional(readOnly = true)
@@ -68,8 +69,30 @@ public class ExpenseService {
 
         var expense = mapper.toEntity(expenseRequest);
         expense.setExpenseSheet(expenseSheet);
+        expense.setCategory(resolveCategory(expenseRequest.categoryId()));
         var saved = expenseRepository.save(expense);
         return mapper.toResponse(saved);
+    }
+
+    @Transactional
+    public ExpenseResponse update(Long id, ExpenseRequest request) {
+        var expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Expense not found: " + id));
+        mapper.updateEntity(request, expense);
+        expense.setCategory(resolveCategory(request.categoryId()));
+        var saved = expenseRepository.save(expense);
+        return mapper.toResponse(saved);
+    }
+
+    private @Nullable ExpenseCategoryEntity resolveCategory(@Nullable Long categoryId) {
+        if (categoryId == null) {
+            return null;
+        }
+
+        return expenseCategoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Expense category not found: " + categoryId));
     }
 
     @Transactional
@@ -86,5 +109,16 @@ public class ExpenseService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Expense not found: " + id));
         expenseRepository.deleteById(id);
+    }
+
+    @Transactional
+    public ExpenseCategoryResponse createCategory(ExpenseCategoryRequest expenseCategoryRequest) {
+        var entityToSave = mapper.toEntity(expenseCategoryRequest);
+        return mapper.toResponse(expenseCategoryRepository.save(entityToSave));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ExpenseCategoryResponse> findAllCategories() {
+        return expenseCategoryRepository.findAll().stream().map(mapper::toResponse).toList();
     }
 }

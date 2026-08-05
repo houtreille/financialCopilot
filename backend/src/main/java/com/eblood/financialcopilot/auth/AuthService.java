@@ -40,7 +40,10 @@ public class AuthService {
 
     @Transactional
     public CurrentUserResponse signUp(SignUpRequest request) {
+        log.info("Sign-up attempt for username '{}'", request.username());
+
         if (repository.findByUsername(request.username()).isPresent()) {
+            log.warn("Sign-up rejected for username '{}': username already taken", request.username());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
         }
 
@@ -54,16 +57,19 @@ public class AuthService {
         member.setCurrentCash(request.currentCash());
 
         HouseholdMemberEntity saved = repository.save(member);
+        log.info("Sign-up succeeded for username '{}' (member id {})", saved.getUsername(), saved.getId());
         return toResponse(saved, false);
     }
 
     public CurrentUserResponse login(LoginRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        log.info("Login attempt for username '{}'", request.username());
+
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         } catch (AuthenticationException e) {
-            log.warn("Login failed for username '{}'", request.username(), e);
+            log.warn("Login failed for username '{}': {}", request.username(), e.getMessage());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
 
@@ -72,10 +78,14 @@ public class AuthService {
         SecurityContextHolder.setContext(context);
         securityContextRepository.saveContext(context, httpRequest, httpResponse);
 
+        log.info("Login succeeded for username '{}'", request.username());
         return currentUser();
     }
 
     public void logout(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Logout for username '{}'", authentication != null ? authentication.getName() : "unknown");
+
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();

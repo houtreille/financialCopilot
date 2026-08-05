@@ -1,6 +1,9 @@
 package com.eblood.financialcopilot.cashflow;
 
+import jakarta.annotation.Nullable;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 
 public record ExpenseResponse (
@@ -11,5 +14,9 @@ public record ExpenseResponse (
         Month month,
         int expenseVersion,
         int expenseVersionId,
-        ExpenseType expenseType) {
+        ExpenseType expenseType,
+        LocalDate startDate,
+        LocalDate endDate,
+        String description,
+        Long categoryId) {
 }

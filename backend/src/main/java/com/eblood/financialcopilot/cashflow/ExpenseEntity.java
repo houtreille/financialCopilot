@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 
 @Entity
@@ -54,4 +55,16 @@ public class ExpenseEntity {
     @JoinColumn(name = "expense_sheet_id", referencedColumnName = "id")
     private ExpenseSheetEntity expenseSheet;
 
+    @Column(name = "start_date", nullable = true)
+    private LocalDate startDate;
+
+    @Column(name = "end_date", nullable = true)
+    private LocalDate endDate;
+
+    @Column(name = "description", nullable = true)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private ExpenseCategoryEntity category;
 }
