@@ -9,6 +9,9 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      # Neon Postgres. Set these in the Render dashboard, not here.
+      # SPRING_DATASOURCE_URL must use the "-pooler" endpoint host and
+      # include "?sslmode=require" - see application-prod.yml for details.
       - key: SPRING_DATASOURCE_URL
         sync: false
       - key: SPRING_DATASOURCE_USERNAME

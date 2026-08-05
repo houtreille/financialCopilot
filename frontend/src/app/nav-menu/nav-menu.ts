@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,4 +8,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.css'
 })
-export class NavMenu {}
+export class NavMenu {
+  private readonly authService = inject(AuthService);
+
+  protected readonly currentUser = this.authService.currentUser;
+}

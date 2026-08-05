@@ -4,9 +4,26 @@
 # environment variables set on the Render service - Spring's env var binding
 # overrides the placeholders in application.yml, so nothing datasource-related
 # needs to be repeated here.
+#
+# The database is Neon Postgres. SPRING_DATASOURCE_URL must:
+#   - use the pooled endpoint host (the one with a "-pooler" suffix), since
+#     Hikari + Neon's own PgBouncer avoids exhausting Neon's free-tier
+#     connection limit;
+#   - include "?sslmode=require", which Neon requires.
+# Neon computes on the free tier suspend after inactivity, so the first
+# request after idle time pays a cold-start connection penalty - the Hikari
+# settings below give that reconnection enough time to succeed instead of
+# failing silently.
 
 server:
   port: ${PORT:8666}
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 20000
 
 logging:
   level:

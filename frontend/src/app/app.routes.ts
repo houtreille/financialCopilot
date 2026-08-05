@@ -27,5 +27,10 @@ export const routes: Routes = [
     canActivate: [authenticatedGuard],
     loadComponent: () => import('./expense-sheet/expense-sheet-viewer').then((m) => m.ExpenseSheetViewer)
   },
+  {
+    path: 'expense-categories',
+    canActivate: [authGuard],
+    loadComponent: () => import('./expense-category/expense-categories').then((m) => m.ExpenseCategories)
+  },
   { path: '**', redirectTo: 'sign-in' }
 ];

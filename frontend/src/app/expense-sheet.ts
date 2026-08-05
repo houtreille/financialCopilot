@@ -26,6 +26,10 @@ export interface Expense {
   expenseVersion: number;
   expenseVersionId: number;
   expenseType: ExpenseType;
+  startDate: string | null;
+  endDate: string | null;
+  description: string | null;
+  categoryId: number | null;
 }
 
 export interface ExpenseRequest {
@@ -34,6 +38,10 @@ export interface ExpenseRequest {
   label: string;
   month: string;
   expenseType: ExpenseType;
+  startDate: string | null;
+  endDate: string | null;
+  description: string | null;
+  categoryId: number | null;
 }
 
 export interface ExpenseSheet {

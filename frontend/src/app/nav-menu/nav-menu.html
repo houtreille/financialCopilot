@@ -5,4 +5,9 @@
   <a routerLink="/expense-sheets" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
     >Expense sheets</a
   >
+  @if (currentUser()?.isAdmin) {
+    <a routerLink="/expense-categories" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
+      >Expense categories</a
+    >
+  }
 </nav>
