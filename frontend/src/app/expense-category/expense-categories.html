@@ -1,0 +1,36 @@
+<main class="app">
+  <app-nav-menu />
+
+  <section class="expense-categories">
+    <h2>Expense categories</h2>
+    @if (error()) {
+      <p class="status status--error">{{ error() }}</p>
+    } @else {
+      <ag-grid-angular
+        style="height: 300px; width: 100%;"
+        [rowData]="categories()"
+        [columnDefs]="columnDefs"
+        [theme]="gridTheme"
+      />
+
+      <h3>Add expense category</h3>
+      <form class="add-category-form" (ngSubmit)="addCategory()">
+        <label>
+          Label
+          <input type="text" name="label" [(ngModel)]="newLabel" required />
+        </label>
+
+        <label>
+          Color
+          <input type="color" name="color" [(ngModel)]="newColor" />
+        </label>
+
+        @if (createError()) {
+          <p class="status status--error">{{ createError() }}</p>
+        }
+
+        <button type="submit">Add category</button>
+      </form>
+    }
+  </section>
+</main>
