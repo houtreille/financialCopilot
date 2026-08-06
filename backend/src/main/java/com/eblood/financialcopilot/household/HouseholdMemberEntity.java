@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.eblood.financialcopilot.cashflow.ExpenseSheetEntity;
+import com.eblood.financialcopilot.cashflow.CashflowSheetEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -55,5 +55,5 @@ public class HouseholdMemberEntity {
     private Collection<RoleEntity> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private Collection<ExpenseSheetEntity> expenseSheets = new ArrayList<>();
+    private Collection<CashflowSheetEntity> cashflowSheets = new ArrayList<>();
 }

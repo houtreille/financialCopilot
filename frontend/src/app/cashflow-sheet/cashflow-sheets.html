@@ -1,0 +1,41 @@
+<main class="app">
+  <app-nav-menu />
+
+  <section class="cashflow-sheets">
+    <h2>Cashflow sheets</h2>
+    @if (error()) {
+      <p class="status status--error">{{ error() }}</p>
+    } @else {
+      <ag-grid-angular
+        style="height: 650px; width: 100%; cursor: pointer;"
+        [rowData]="cashflowSheets()"
+        [columnDefs]="columnDefs"
+        [theme]="gridTheme"
+        (cellClicked)="onCellClicked($event)"
+      />
+
+      <h3>Add cashflow sheet</h3>
+      <form class="add-cashflow-sheet-form" (ngSubmit)="addCashflowSheet()">
+        <label>
+          Sheet name
+          <input type="text" name="sheetName" [(ngModel)]="newSheetName" required />
+        </label>
+
+        <label>
+          Type
+          <select name="type" [(ngModel)]="newType" required>
+            @for (type of cashflowSheetTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        @if (createError()) {
+          <p class="status status--error">{{ createError() }}</p>
+        }
+
+        <button type="submit">Add cashflow sheet</button>
+      </form>
+    }
+  </section>
+</main>

@@ -2,12 +2,12 @@
   <a routerLink="/dashboard" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
     >Household members</a
   >
-  <a routerLink="/expense-sheets" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
-    >Expense sheets</a
+  <a routerLink="/cashflow-sheets" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
+    >Cashflow sheets</a
   >
   @if (currentUser()?.isAdmin) {
-    <a routerLink="/expense-categories" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
-      >Expense categories</a
+    <a routerLink="/cashflow-categories" routerLinkActive="nav-menu__link--active" class="nav-menu__link"
+      >Cashflow categories</a
     >
   }
 </nav>

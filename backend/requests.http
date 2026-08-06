@@ -16,29 +16,31 @@ Content-Type: application/json
 ### List household members
 GET http://localhost:8666/api/household-member
 
-### Create an expense
-POST http://localhost:8666/api/expense
+### Create a cashflow
+POST http://localhost:8666/api/cashflow
 Content-Type: application/json
 
 {
   "amount": 150.00,
   "month": "JULY",
   "label": "Electricity bill",
-  "expenseType": "MONTHLY",
-  "expenseSheetId": 1
+  "cashflowType": "MONTHLY",
+  "direction": "OUTFLOW",
+  "cashflowSheetId": 1
 }
 
-### List expenses
-GET http://localhost:8666/api/expenses
+### List cashflows
+GET http://localhost:8666/api/cashflows
 
-### Create an expense sheet
-POST http://localhost:8666/api/expense-sheet
+### Create a cashflow sheet
+POST http://localhost:8666/api/cashflow-sheet
 Content-Type: application/json
 
 {
   "sheetName": "Sept budget",
-  "owner": "admin"
+  "owner": "admin",
+  "type": "MONTHLY"
 }
 
-### List expense sheets for an owner
-GET http://localhost:8666/api/expense-sheets?owner=admin
+### List cashflow sheets for an owner
+GET http://localhost:8666/api/cashflow-sheets?owner=admin

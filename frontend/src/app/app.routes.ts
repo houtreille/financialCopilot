@@ -18,19 +18,19 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard)
   },
   {
-    path: 'expense-sheets',
+    path: 'cashflow-sheets',
     canActivate: [authenticatedGuard],
-    loadComponent: () => import('./expense-sheet/expense-sheets').then((m) => m.ExpenseSheets)
+    loadComponent: () => import('./cashflow-sheet/cashflow-sheets').then((m) => m.CashflowSheets)
   },
   {
-    path: 'expense-sheets/:id',
+    path: 'cashflow-sheets/:id',
     canActivate: [authenticatedGuard],
-    loadComponent: () => import('./expense-sheet/expense-sheet-viewer').then((m) => m.ExpenseSheetViewer)
+    loadComponent: () => import('./cashflow-sheet/cashflow-sheet-viewer').then((m) => m.CashflowSheetViewer)
   },
   {
-    path: 'expense-categories',
+    path: 'cashflow-categories',
     canActivate: [authGuard],
-    loadComponent: () => import('./expense-category/expense-categories').then((m) => m.ExpenseCategories)
+    loadComponent: () => import('./cashflow-category/cashflow-categories').then((m) => m.CashflowCategories)
   },
   { path: '**', redirectTo: 'sign-in' }
 ];

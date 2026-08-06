@@ -1,0 +1,95 @@
+<main class="app">
+  <app-nav-menu />
+
+  @if (error()) {
+    <p class="status status--error">{{ error() }}</p>
+  } @else if (cashflowSheet()) {
+    <section class="cashflow-sheet-viewer">
+      <h2>{{ cashflowSheet()!.sheetName }}</h2>
+      <p>Owner: {{ cashflowSheet()!.owner }}</p>
+
+      <ag-grid-angular
+        style="height: 600px; width: 100%;"
+        [rowData]="cashflowSheet()!.cashflows"
+        [columnDefs]="columnDefs"
+        [getRowStyle]="getRowStyle"
+        [theme]="gridTheme"
+        (cellClicked)="onCellClicked($event)"
+        (cellValueChanged)="onCellValueChanged($event)"
+      />
+
+      <p class="total"><strong>Total: {{ totalAmount() }}</strong></p>
+
+      <h3>Add cashflow</h3>
+      <form class="add-cashflow-form" (ngSubmit)="addCashflow()">
+        <label>
+          Label
+          <input type="text" name="label" [(ngModel)]="newLabel" required />
+        </label>
+
+        <label>
+          Amount
+          <input type="number" name="amount" [(ngModel)]="newAmount" step="0.01" required />
+        </label>
+
+        <label>
+          Month
+          <select name="month" [(ngModel)]="newMonth" [disabled]="newCashflowType === 'MONTHLY'" required>
+            @for (month of months; track month) {
+              <option [value]="month">{{ month }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Type
+          <select name="cashflowType" [(ngModel)]="newCashflowType" required>
+            @for (type of cashflowTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Direction
+          <select name="direction" [(ngModel)]="newDirection" required>
+            @for (direction of cashflowDirections; track direction) {
+              <option [value]="direction">{{ direction }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Start date
+          <input type="date" name="startDate" [(ngModel)]="newStartDate" />
+        </label>
+
+        <label>
+          End date
+          <input type="date" name="endDate" [(ngModel)]="newEndDate" />
+        </label>
+
+        <label>
+          Description
+          <input type="text" name="description" [(ngModel)]="newDescription" />
+        </label>
+
+        <label>
+          Category
+          <select name="categoryId" [(ngModel)]="newCategoryId">
+            <option [ngValue]="null">None</option>
+            @for (category of categories(); track category.id) {
+              <option [ngValue]="category.id">{{ category.label }}</option>
+            }
+          </select>
+        </label>
+
+        @if (createError()) {
+          <p class="status status--error">{{ createError() }}</p>
+        }
+
+        <button type="submit">Add cashflow</button>
+      </form>
+    </section>
+  }
+</main>
